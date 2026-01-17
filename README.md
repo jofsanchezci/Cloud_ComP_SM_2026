@@ -6,3 +6,13 @@
 ## Ejemplo Flask
 - Un ejemplo basico hello.py
 - Un entorno virtual venv
+
+
+## Ejemplo Server
+ - Cliente.py
+ - Servidor.py
+ - example.db
+
+## Función:
+ - Funcion.py
+ - Archivos con funciones
