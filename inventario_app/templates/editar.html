@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar producto</title>
+</head>
+<body>
+    <h1>Editar producto</h1>
+    <form method="post">
+        <label>Nombre:</label>
+        <input name="nombre" value="{{ producto[1] }}" required><br>
+        <label>Cantidad actual:</label>
+        <input name="cantidad_actual" type="number" value="{{ producto[2] }}" required><br>
+        <label>Precio:</label>
+        <input name="precio" type="number" step="0.01" value="{{ producto[3] }}" required><br>
+        <label>Cantidad futura:</label>
+        <input name="cantidad_futura" type="number" value="{{ producto[4] }}"><br>
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{{ url_for('index') }}">Volver al inventario</a>
+</body>
+</html>

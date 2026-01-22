@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventario Electrónicos</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+
+        socket.on('actualizar_inventario', () => {
+            cargarInventario();
+        });
+
+        async function cargarInventario() {
+            const response = await fetch('/inventario');
+            const productos = await response.json();
+            const tbody = document.getElementById("inventario-body");
+            tbody.innerHTML = "";
+            productos.forEach(p => {
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>${p[0]}</td><td>${p[1]}</td><td>${p[2]}</td><td>${p[3]}</td><td>${p[4]}</td><td>${parseFloat(p[5]).toFixed(2)}</td>
+                    <td>
+                        <a href="/editar/${p[0]}">Editar</a>
+                        <form action="/eliminar/${p[0]}" method="post" style="display:inline;">
+                            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')">Eliminar</button>
+                        </form>
+                    </td>`;
+                tbody.appendChild(fila);
+            });
+        }
+
+        window.onload = cargarInventario;
+    </script>
+</head>
+<body>
+    <h1>Inventario</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th><th>Nombre</th><th>Cantidad</th><th>Precio</th><th>Futuro</th><th>Precio con IVA</th><th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="inventario-body"></tbody>
+    </table>
+
+    <h2>Agregar producto</h2>
+    <form action="/agregar" method="post">
+        <input name="nombre" placeholder="Nombre" required>
+        <input name="cantidad_actual" type="number" placeholder="Cantidad actual" required>
+        <input name="precio" type="number" step="0.01" placeholder="Precio" required>
+        <input name="cantidad_futura" type="number" placeholder="Cantidad futura" value="0">
+        <button type="submit">Agregar</button>
+    </form>
+
+    <h2>Carga Masiva</h2>
+    <form action="/cargar_masiva" method="post" enctype="multipart/form-data">
+        <input type="file" name="archivo" required>
+        <button type="submit">Cargar</button>
+    </form>
+</body>
+</html>
